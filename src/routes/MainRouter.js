@@ -5,6 +5,7 @@ import Inventario from '../components/inventario/Inventario'
 import BarraNav from '../components/iu/BarraNav'
 import Marca from '../components/marca/Marca'
 import TipoEquipo from '../components/tipoequipo/TipoEquipo'
+import Usuario from '../components/usuario/Usuario'
 
 export default function MainRouter() {
   return (
@@ -13,8 +14,9 @@ export default function MainRouter() {
         <Routes>
             <Route path='/' element={<Estado />}/>
             <Route path='/marcas' element={ <Marca />}/>
-            <Route path='/tipoequipos' element={ <TipoEquipo />}/>
+            <Route path='/tiposEquipo' element={ <TipoEquipo />}/>
             <Route path='/inventarios' element={ <Inventario />}/>
+            <Route path='/usuario' element={ <Usuario />}/>
         </Routes>
     </BrowserRouter>
   )

@@ -1,14 +1,15 @@
 
 import React, { useEffect, useState }  from 'react'
-import {obtenerTodasLasMarcas, obtenerMarcaId, crearMarca, eliminarMarcaId } from '../../services/marcaService';
-import TablaMarca from '../iu/TablaMarca';
+import {obtenerTodosUsuarios, crearUsuario, obtenerUsuarioId, eliminarUsuario} from '../../services/UsuarioService';
+import TablaUsuario from '../iu/TablaUsuario';
 import Modal from './Modal'
 
-export default function Marca() {
-  const [marcas, setMarcas] = useState([]);
-  const [marca, setMarca] = useState({
+export default function Usuario() {
+  const [usuarios, setUsuarios] = useState([]);
+  const [usuario, setUsuario] = useState({
     _id: '',
     nombre: '',
+    email: '',
     estado: true
   });
   const [error, setError] = useState(false);
@@ -16,22 +17,22 @@ export default function Marca() {
   const [loading, setLoading] = useState(false);
 
   useEffect( () => {
-    const getMarcas = () => {
-      obtenerTodasLasMarcas()
+    const getUsuarios = () => {
+        obtenerTodosUsuarios()
         .then(r => {
             console.log(r);
-            setMarcas(r.data)
+            setUsuarios(r.data)
         }).catch(e => {
             console.log(e)
         })
     }
-    getMarcas();
+    getUsuarios();
   }, []);
 
-  const changeMarca = e => {
+  const changeUsuario = e => {
     e.preventDefault();
-    setMarca({
-      ...marcas,
+    setUsuario({
+      ...usuarios,
       [e.target.name]: e.target.value 
     })
   }
@@ -39,19 +40,19 @@ export default function Marca() {
   const add = e => {
     setLoading(true);
     e.preventDefault();
-    console.log(marca);
-    if(marcas._id){
-      editarMarca();
+    console.log(usuario);
+    if(usuarios._id){
+      editarUsuario();
     }else{
-      guardarMarca();
+      guardarUsuario();
     }
-    resetMarca();
+    resetUsuario();
   }
 
-  const guardarMarca = () => {
-    crearMarca(marcas)
+  const guardarUsuario = () => {
+    crearUsuario(usuarios)
     .then(r => {
-      setMarcas([...marcas, r.data]);
+      setUsuarios([...usuarios, r.data]);
       changeError(false)
       setLoading(false);
     }).catch(e => {
@@ -62,7 +63,7 @@ export default function Marca() {
   }
 
   const closeModal = () => {
-    resetMarca()
+    resetUsuario()
     changeError(false)
   }
 
@@ -77,21 +78,21 @@ export default function Marca() {
       setLoading(false);
       const id = e.target.getAttribute('data');
       console.log(id)
-      const marcaFilter = marcas.filter(est => est._id === id)[0];
-      setMarca({
-        ...marcaFilter
+      const usuarioFilter = usuarios.filter(est => est._id === id)[0];
+      setUsuario({
+        ...usuarioFilter
       });
     }, 500)
   }
 
-  const editarMarca = () => {
-    obtenerMarcaId(marca._id, marca)
+  const editarUsuario = () => {
+    obtenerUsuarioId(usuario._id, usuario)
     .then(r => {
       console.log(r.data._id)
       const id = r.data._id;
-      if(!r.data.marca){
-        const activos = marcas.filter(est => est._id !== id);
-        setMarcas(activos);
+      if(!r.data.usuario){
+        const activos = usuarios.filter(est => est._id !== id);
+        setUsuarios(activos);
       }
       changeError(false)
       setLoading(false);
@@ -102,22 +103,22 @@ export default function Marca() {
     })
   }
 
-  const resetMarca = () => {
-    setMarca({
+  const resetUsuario = () => {
+    setUsuario({
       _id: '',
       nombre: '',
       estado: true
     })
   }
 
-  const eliminarMarca = e => {
+  const eliminarUser = e => {
     e.preventDefault();
     setLoading(true);
     const id = e.target.getAttribute('data');
-    eliminarMarcaId(id)
+    eliminarUsuario(id)
     .then(r => {
-      const activos = marcas.filter(est => est._id !== id);
-      setMarcas(activos);
+      const activos = usuarios.filter(est => est._id !== id);
+      setUsuarios(activos);
       setLoading(false);
     }).catch(e => {
       console.log(e);
@@ -127,30 +128,29 @@ export default function Marca() {
   return (
     <div className='container'>
       <button 
-        onClick={resetMarca}
+        onClick={resetUsuario}
         type="button" 
         className="btn btn-outline-primary"
         data-bs-toggle="modal" 
-        data-bs-target="#modalMarca"
+        data-bs-target="#modalUser"
       >
         <i className="fa-solid fa-plus"></i>
         Agregar
       </button>
-      <TablaMarca 
-        componentes={marcas}
+      <TablaUsuario 
+        componentes={usuarios}
         openEditById={openEditById}
-        eliminar={eliminarMarca}
+        eliminar={eliminarUser}
       />
       <Modal
-        marca={marca}
+        usuario={usuario}
         loading={loading}
         closeModal={closeModal}
         hidden={hidden}
-        changeMarca={changeMarca}
+        changeUsuario={changeUsuario}
         error={error}
         add={add}
       />
     </div>
   )
 }
-

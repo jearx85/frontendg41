@@ -108,7 +108,7 @@ export default function Estado() {
       nombre: '',
       estado: true
     })
-  }
+  } 
 
   const eliminarEstado = e => {
     e.preventDefault();

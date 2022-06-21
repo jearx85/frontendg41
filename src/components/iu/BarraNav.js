@@ -25,9 +25,15 @@ export default function BarraNav() {
                 </NavLink>
                 <NavLink 
                     className="nav-item nav-link"
-                    to='/tipoequipos'
+                    to='/tiposEquipo'
                 >
                    Tipos Equipos
+                </NavLink>
+                <NavLink 
+                    className="nav-item nav-link"
+                    to='/usuario'
+                >
+                   Usuarios
                 </NavLink>
                 <NavLink 
                     className="nav-item nav-link"
